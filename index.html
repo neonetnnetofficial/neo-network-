@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neo Network - Limited Lifetime Access</title>
+    
+    <!-- Paystack -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            padding: 40px 0;
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: #00D9FF;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            color: #888;
+            font-weight: 300;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 80px 0;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: #aaa;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            font-weight: 300;
+        }
+
+        /* Pricing */
+        .pricing-section {
+            padding: 60px 0 100px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: #888;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .price-card {
+            background: #0a0a0a;
+            border: 2px solid #1a1a1a;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .price-card:hover {
+            border-color: #00D9FF;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0, 217, 255, 0.2);
+        }
+
+        .price-card.featured {
+            border-color: #00D9FF;
+            transform: scale(1.05);
+        }
+
+        .badge {
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            background: #00D9FF;
+            color: #000;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .tier-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #00D9FF;
+        }
+
+        .spots {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .price {
+            font-size: 4rem;
+            font-weight: 900;
+            margin: 20px 0;
+        }
+
+        .price-currency {
+            font-size: 2rem;
+            color: #888;
+        }
+
+        .price-note {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: #00D9FF;
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            background: #00b8d4;
+            transform: scale(1.02);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .features-list {
+            list-style: none;
+            text-align: left;
+            margin: 30px 0;
+            padding: 0;
+        }
+
+        .features-list li {
+            padding: 10px 0;
+            color: #aaa;
+            font-size: 0.95rem;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .features-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #00D9FF;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Benefits */
+        .benefits {
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            border-radius: 20px;
+            padding: 60px 40px;
+            margin: 60px auto;
+            max-width: 1000px;
+        }
+
+        .benefits h3 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .benefit-item {
+            text-align: center;
+        }
+
+        .benefit-item h4 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #00D9FF;
+        }
+
+        .benefit-item p {
+            color: #888;
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid rgba(0, 217, 255, 0.1);
+            margin-top: 60px;
+        }
+
+        .footer-text {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .footer-link {
+            color: #00D9FF;
+            text-decoration: none;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #0a0a0a;
+            border: 2px solid #00D9FF;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-header {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #aaa;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #00D9FF;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-cancel {
+            background: transparent;
+            border: 1px solid #333;
+            color: #fff;
+        }
+
+        .btn-cancel:hover {
+            background: #1a1a1a;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .price {
+                font-size: 3rem;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .price-card.featured {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">NEO NETWORK</div>
+            <div class="tagline">AI Learning Companion for Web3</div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1>Learn Anything.<br>Build Anything.</h1>
+            <p>Neo is your AI tutor that explains complex topics visually with a holographic glass board interface. Starting with Web3 and blockchain.</p>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="pricing-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Limited Lifetime Access</h2>
+                <p>First 50 spots only • After launch: $10/month forever</p>
+            </div>
+
+            <div class="pricing-grid">
+                <!-- Tier 1 -->
+                <div class="price-card">
+                    <div class="tier-name">TIER 1</div>
+                    <div class="spots">First 10 Spots</div>
+                    <div class="price">
+                        <span class="price-currency">$</span>20
+                    </div>
+                    <div class="price-note">One-time payment</div>
+                    
+                    <ul class="features-list">
+                        <li>Lifetime Neo AI access</li>
+                        <li>All NeoTools (when released)</li>
+                        <li>Future features included</li>
+                        <li>Founding member badge</li>
+                        <li>Priority support</li>
+                    </ul>
+                    
+                    <button class="btn" onclick="openPayment('tier1', 20, 'Tier 1')">Secure Your Spot</button>
+                </div>
+
+                <!-- Tier 2 -->
+                <div class="price-card featured">
+                    <div class="badge">BEST VALUE</div>
+                    <div class="tier-name">TIER 2</div>
+                    <div class="spots">Next 20 Spots</div>
+                    <div class="price">
+                        <span class="price-currency">$</span>35
+                    </div>
+                    <div class="price-note">One-time payment</div>
+                    
+                    <ul class="features-list">
+                        <li>Lifetime Neo AI access</li>
+                        <li>All NeoTools (when released)</li>
+                        <li>Future features included</li>
+                        <li>Founding member badge</li>
+                        <li>Priority support</li>
+                        <li>Exclusive Discord role</li>
+                    </ul>
+                    
+                    <button class="btn" onclick="openPayment('tier2', 35, 'Tier 2')">Secure Your Spot</button>
+                </div>
+
+                <!-- Tier 3 -->
+                <div class="price-card">
+                    <div class="tier-name">TIER 3</div>
+                    <div class="spots">Final 20 Spots</div>
+                    <div class="price">
+                        <span class="price-currency">$</span>50
+                    </div>
+                    <div class="price-note">One-time payment</div>
+                    
+                    <ul class="features-list">
+                        <li>Lifetime Neo AI access</li>
+                        <li>All NeoTools (when released)</li>
+                        <li>Future features included</li>
+                        <li>Founding member badge</li>
+                        <li>Priority support</li>
+                        <li>Exclusive Discord role</li>
+                        <li>Early hackathon access</li>
+                    </ul>
+                    
+                    <button class="btn" onclick="openPayment('tier3', 50, 'Tier 3')">Secure Your Spot</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits -->
+    <section class="benefits container">
+        <h3>Why Lifetime Access?</h3>
+        <div class="benefits-grid">
+            <div class="benefit-item">
+                <h4><i class="fas fa-money-bill-wave" style="color: #00D9FF; margin-right: 8px;"></i> Save Money</h4>
+                <p>$20 once vs $10/month = Break even in 2 months</p>
+            </div>
+            <div class="benefit-item">
+                <h4><i class="fas fa-lock" style="color: #00D9FF; margin-right: 8px;"></i> Lock In Price</h4>
+                <p>Never worry about price increases</p>
+            </div>
+            <div class="benefit-item">
+                <h4><i class="fas fa-star" style="color: #00D9FF; margin-right: 8px;"></i> Founding Member</h4>
+                <p>Special status and recognition</p>
+            </div>
+            <div class="benefit-item">
+                <h4><i class="fas fa-rocket" style="color: #00D9FF; margin-right: 8px;"></i> All Future Features</h4>
+                <p>Every update, yours forever</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p class="footer-text">
+                Questions? Contact us on X: <a href="https://twitter.com/NeoNet396112" class="footer-link">@NeoNet396112</a><br>
+                Email: <a href="mailto:neonetnnetofficial@gmail.com" class="footer-link">neonetnnetofficial@gmail.com</a>
+            </p>
+            <p class="footer-text" style="margin-top: 20px;">
+                © 2026 Neo Network. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Payment Modal -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <h2 class="modal-header" id="modalTitle">Complete Your Purchase</h2>
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="your@email.com" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Your Name" required>
+            </div>
+            
+            <div class="modal-buttons">
+                <button class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="btn" onclick="processPayment()">Pay Now</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const PAYSTACK_KEY = 'pk_test_5f5dfe90d7abdb632c81d';
+        
+        // Store current payment details
+        let currentPayment = {
+            tier: '',
+            amount: 0,
+            tierName: ''
+        };
+
+        // Open payment modal
+        function openPayment(tier, amount, tierName) {
+            currentPayment = { tier, amount, tierName };
+            document.getElementById('modalTitle').textContent = `${tierName} - $${amount}`;
+            document.getElementById('paymentModal').classList.add('active');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('paymentModal').classList.remove('active');
+            document.getElementById('email').value = '';
+            document.getElementById('name').value = '';
+        }
+
+        // Process payment with Paystack
+        function processPayment() {
+            const email = document.getElementById('email').value.trim();
+            const name = document.getElementById('name').value.trim();
+
+            // Validation
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address');
+                return;
+            }
+
+            if (!name) {
+                alert('Please enter your name');
+                return;
+            }
+
+            // Close modal
+            closeModal();
+
+            // Initialize Paystack payment
+            const handler = PaystackPop.setup({
+                key: PAYSTACK_KEY,
+                email: email,
+                amount: currentPayment.amount * 100, // Convert to cents
+                currency: 'USD',
+                ref: 'NEO_' + currentPayment.tier.toUpperCase() + '_' + Date.now(),
+                metadata: {
+                    custom_fields: [
+                        {
+                            display_name: "Tier",
+                            variable_name: "tier",
+                            value: currentPayment.tierName
+                        },
+                        {
+                            display_name: "Customer Name",
+                            variable_name: "customer_name",
+                            value: name
+                        }
+                    ]
+                },
+                onClose: function() {
+                    alert('Payment window closed');
+                },
+                callback: function(response) {
+                    // Payment successful
+                    alert(
+                        'Payment Successful!\n\n' +
+                        'Reference: ' + response.reference + '\n\n' +
+                        'Welcome to Neo Network! Check your email for next steps.'
+                    );
+                    
+                    // You can add code here to send confirmation email or save to database
+                    console.log('Payment successful:', response);
+                }
+            });
+
+            handler.openIframe();
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('paymentModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
